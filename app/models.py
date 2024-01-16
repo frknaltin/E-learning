@@ -2,24 +2,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from flask_login import UserMixin
 
-if not 'Course' in locals():
-    class Course(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(100), nullable=False)
-        category = db.Column(db.String(100), nullable=False)
-        description = db.Column(db.Text, nullable=False)
-        teacher = db.Column(db.String(100), nullable=False)
-        cover_url = db.Column(db.String(250))
-        students = db.Column(db.Integer, nullable=False)
-        length = db.Column(db.Integer, nullable=False)
-        price = db.Column(db.Float, nullable=False)
-        comments = db.Column(db.Integer, nullable=False)
-        points = db.Column(db.Integer, nullable=False)
-        users = db.relationship('User', secondary='user_courses', back_populates='courses')
-
-        def __repr__(self):
-            return f'<Course {self.name}>'
-
 if not 'Teacher' in locals():
     class Teacher(db.Model):
         id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +22,24 @@ if not 'Student' in locals():
 
         def __repr__(self):
             return f'<Student {self.name}>'
+        
+if not 'Course' in locals():
+    class Course(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.String(100), nullable=False)
+        category = db.Column(db.String(100), nullable=False)
+        description = db.Column(db.Text, nullable=False)
+        teacher = db.Column(db.String(100), nullable=False)
+        cover_url = db.Column(db.String(250))
+        students = db.Column(db.Integer, nullable=False)
+        length = db.Column(db.Integer, nullable=False)
+        price = db.Column(db.Float, nullable=False)
+        comments = db.Column(db.Integer, nullable=False)
+        points = db.Column(db.Integer, nullable=False)
+        users = db.relationship('User', secondary='user_courses', back_populates='courses')
+
+        def __repr__(self):
+            return f'<Course {self.name}>'
 
 if not 'User' in locals():
     class User(UserMixin, db.Model):

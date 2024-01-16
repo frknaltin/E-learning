@@ -1,6 +1,6 @@
 from flask import Flask, flash, redirect, request, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_admin import Admin
 from os import path
@@ -82,3 +82,11 @@ def add_contact():
             db.session.close()
 
     return redirect(url_for('contact'))
+
+@app.before_request
+def before_request():
+    if "/admin" in request.url:
+        if current_user.is_authenticated and current_user.is_admin:
+            return None
+        else:
+            return redirect(url_for("auth.login"))
